@@ -6,12 +6,12 @@ import java.util.Optional;
 
 import org.springframework.stereotype.Service;
 
-import com.proyecto.ventas.common.commonSvcImpl;
+import com.proyecto.ventas.common.CommonSvcImpl;
 import com.proyecto.ventas.models.proveedoresModel;
 import com.proyecto.ventas.repository.proveedoresRepository;
 
 @Service
-public class proveedoresServiceImpl extends commonSvcImpl<proveedoresModel, proveedoresRepository> implements proveedoresService {
+public class proveedoresServiceImpl extends CommonSvcImpl<proveedoresModel, proveedoresRepository> implements proveedoresService {
 
     @Override
     public void deleteById(int id) {
