@@ -1,12 +1,14 @@
 package com.proyecto.ventas.models;
 
 import java.io.Serializable;
+import java.util.List;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -26,4 +28,10 @@ public class rolesModel implements Serializable {
 
     @Column(name = "nombre", unique = true, nullable = false, length = 30)
     private String nombre;
+
+    /*Relacion de Tabla Roles y Usuarios */
+    /*@OneToMany un rol puede estar asociado con muchos usuarios*/
+    /*List<usuariosModel> indica que puede haber múltiples instancias de usuariosModel asociadas a un solo rolesModel. */
+    @OneToMany(mappedBy = "rol")
+    private List<usuariosModel> usuarios;
 }
