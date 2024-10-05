@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.proyecto.ventas.models.rolesModel;
-import com.proyecto.ventas.services.rolesService;
+import com.proyecto.ventas.service.rolesService;
 
 @RestController
 @RequestMapping("/roles")
