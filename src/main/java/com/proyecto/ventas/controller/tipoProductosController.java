@@ -12,40 +12,39 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.proyecto.ventas.models.proveedoresModel;
-import com.proyecto.ventas.service.proveedoresService;
+import com.proyecto.ventas.models.tipoProductosModel;
+import com.proyecto.ventas.service.tipoProductosService;
 
 @RestController
-@RequestMapping("/proveedores")
+@RequestMapping("/tipo_productos")
 @CrossOrigin
 
-
-public class proveedoresController {
-
+public class tipoProductosController {
+    
     @Autowired
-    private proveedoresService proveedoresService;
+    private tipoProductosService tipoProductosService;
 
     @GetMapping("/listar")
-    public Iterable<proveedoresModel> getProveedores() {
-        return this.proveedoresService.findAll();
+    public Iterable<tipoProductosModel> getTipoProductos() {
+        return this.tipoProductosService.findAll();
     }
 
     @PostMapping("/guardar")
-    public ResponseEntity<String> saveProveedores(@RequestBody proveedoresModel entity) {
+    public ResponseEntity<String> saveTipoProductos (@RequestBody tipoProductosModel entity) {
         try {
-            this.proveedoresService.save(entity);
-            return ResponseEntity.ok("Proveedor guardado correctamente");
+            this.tipoProductosService.save(entity);
+            return ResponseEntity.ok("Tipo de producto guardado correctamente");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error en el servidor");
         }
 
     }
 
-    @DeleteMapping("/eliminar/{idProveedor}")
-    public ResponseEntity<String> deleteProveedores(@PathVariable int idProveedor) {
+    @DeleteMapping("/eliminar/{idTipoProductos}")
+    public ResponseEntity<String> deleteTipoProductos (@PathVariable int idTipoProductos) {
         try {
-            this.proveedoresService.deleteById(idProveedor);
-            return ResponseEntity.ok("Proveedor eliminado correctamente");
+            this.tipoProductosService.deleteById(idTipoProductos);
+            return ResponseEntity.ok("Tipo de producto eliminado correctamente");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error en el servidor");
         }
@@ -53,13 +52,12 @@ public class proveedoresController {
     }
 
     @PutMapping("/actualizar")
-    public ResponseEntity<String> updateProveedores(@RequestBody proveedoresModel entity) {
+    public ResponseEntity<String> updateTipoProductos (@RequestBody tipoProductosModel entity) {
         try {
-            this.proveedoresService.save(entity);
-            return ResponseEntity.ok("Proveedor actualizado correctamente");
+            this.tipoProductosService.save(entity);
+            return ResponseEntity.ok("Tipo de producto actualizado correctamente");
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error en el servidor");
         }
-
     }
 }
