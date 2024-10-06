@@ -19,19 +19,15 @@ import lombok.Setter;
 
 @Table(name = "roles")
 public class rolesModel implements Serializable {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-
     @Column(name = "id", unique = true, nullable = false)
     private int id;
 
     @Column(name = "nombre", unique = true, nullable = false, length = 30)
     private String nombre;
 
-    /*Relacion de Tabla Roles y Usuarios */
-    /*@OneToMany un rol puede estar asociado con muchos usuarios*/
-    /*List<usuariosModel> indica que puede haber múltiples instancias de usuariosModel asociadas a un solo rolesModel. */
+    // Relacion de uno a muchos con la tabla Usuarios
     @OneToMany(mappedBy = "rol")
     private List<usuariosModel> usuarios;
 }

@@ -16,21 +16,21 @@ import lombok.Setter;
 @Getter
 @Setter
 @Entity
-@Table(name = "tipo_productos")
 
-public class tipoProductosModel implements Serializable{
-    
+@Table(name = "tipo_productos")
+public class tipoProductosModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private int id;
 
-    @Column(name="nombre", nullable = false, length = 50)
+    @Column(name = "nombre", nullable = false, length = 30)
     private String nombre;
 
-    @Column(name="estado", nullable = false, length = 1)
+    @Column(name = "estado", nullable = false)
     private boolean estado;
 
+    // Relacion de uno a muchos con la tabla Productos
     @OneToMany(mappedBy = "tipoProducto")
     private List<productosModel> productos;
 }
