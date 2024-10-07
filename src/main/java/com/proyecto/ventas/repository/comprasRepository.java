@@ -1,5 +1,6 @@
 package com.proyecto.ventas.repository;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
@@ -10,7 +11,7 @@ import com.proyecto.ventas.models.comprasModel;
 @Repository
 public interface comprasRepository extends CrudRepository<comprasModel, Object> {
     // Buscar por fecha
-    List<comprasModel> findByFecha(String fecha);
+    List<comprasModel> findByFechaCompra(Date fechaCompra);
 
     // Buscar por estado
     List<comprasModel> findByEstado(Boolean estado);

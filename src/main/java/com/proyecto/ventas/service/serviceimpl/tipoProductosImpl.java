@@ -1,6 +1,6 @@
 package com.proyecto.ventas.service.serviceimpl;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -10,33 +10,18 @@ import com.proyecto.ventas.repository.tipoProductosRepository;
 import com.proyecto.ventas.service.tipoProductosService;
 
 @Service
-public class tipoProductosImpl extends CommonSvcImpl<tipoProductosModel, tipoProductosRepository> implements tipoProductosService {
+public class tipoProductosImpl extends CommonSvcImpl<tipoProductosModel, tipoProductosRepository>
+        implements tipoProductosService {
 
+    // Buscar por nombre
     @Override
-    public void deleteById(int id) {
-        this.repository.deleteById(id);
+    public List<tipoProductosModel> findByNombre(String nombre) {
+        return this.repository.findByNombre(nombre);
     }
 
+    // Buscar todos los tipo de productos con un estado
     @Override
-    public Iterable<tipoProductosModel> findAll() {
-        return this.repository.findAll();
+    public List<tipoProductosModel> findByEstado(Boolean estado) {
+        return this.repository.findByEstado(estado);
     }
-
-    @Override
-    public Optional<tipoProductosModel> findById(int id) {
-        return this.repository.findById(id);
-    }
-
-    @Override
-    public tipoProductosModel save(tipoProductosModel entity) {
-        return this.repository.save(entity);
-    }
-    
-
-    @Override
-    public Iterable<tipoProductosModel> saveAll(Iterable<tipoProductosModel> entities) {
-        return this.repository.saveAll(entities);
-    }
-    
-
 }

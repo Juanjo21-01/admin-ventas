@@ -2,6 +2,9 @@ package com.proyecto.ventas.models;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -46,6 +49,7 @@ public class ventasModel implements Serializable {
     private usuariosModel usuario;
 
     // Relación uno a muchos con la tabla Detalle de ventas
+    @JsonIgnore
     @OneToMany(mappedBy = "venta")
     private List<detalleVentasModel> detalleVentas;
 }

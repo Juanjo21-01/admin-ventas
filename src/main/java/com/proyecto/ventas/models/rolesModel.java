@@ -3,6 +3,8 @@ package com.proyecto.ventas.models;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,6 +30,7 @@ public class rolesModel implements Serializable {
     private String nombre;
 
     // Relacion de uno a muchos con la tabla Usuarios
+    @JsonIgnore
     @OneToMany(mappedBy = "rol")
     private List<usuariosModel> usuarios;
 }

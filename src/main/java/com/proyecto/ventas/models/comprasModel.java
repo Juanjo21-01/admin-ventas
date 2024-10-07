@@ -2,6 +2,9 @@ package com.proyecto.ventas.models;
 
 import java.io.Serializable;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import java.util.Date;
 
 import jakarta.persistence.Column;
@@ -51,6 +54,7 @@ public class comprasModel implements Serializable {
     private proveedoresModel proveedor;
 
     // Relación uno a muchos con la tabla Detalle de Compras
+    @JsonIgnore
     @OneToMany(mappedBy = "compra")
     private List<detalleComprasModel> detalleCompras;
 }

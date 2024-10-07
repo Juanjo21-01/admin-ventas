@@ -1,6 +1,6 @@
 package com.proyecto.ventas.service.serviceimpl;
 
-import java.util.Optional;
+import java.util.List;
 
 import org.springframework.stereotype.Service;
 
@@ -10,32 +10,36 @@ import com.proyecto.ventas.repository.productosRepository;
 import com.proyecto.ventas.service.productosService;
 
 @Service
-public class productosServiceImpl extends CommonSvcImpl<productosModel, productosRepository> implements productosService{
+public class productosServiceImpl extends CommonSvcImpl<productosModel, productosRepository>
+        implements productosService {
 
+    // Listar todos los productos
     @Override
-    public void deleteById(int id) {
-        this.repository.deleteById(id);
+    public List<productosModel> findAll() {
+        return (List<productosModel>) this.repository.findAll();
     }
 
+    // Buscar por nombre
     @Override
-    public Iterable<productosModel> findAll() {
-        return this.repository.findAll();
+    public List<productosModel> findByNombre(String nombre) {
+        return this.repository.findByNombre(nombre);
     }
 
+    // Buscar todos los productos con un estado
     @Override
-    public Optional<productosModel> findById(int id) {
-        return this.repository.findById(id);
+    public List<productosModel> findByEstado(Boolean estado) {
+        return this.repository.findByEstado(estado);
     }
 
+    // Buscar todos los productos con el mismo tipo de producto
     @Override
-    public productosModel save(productosModel entity) {
-        return this.repository.save(entity);
+    public List<productosModel> findByTipoProductoId(Integer tipoProductoId) {
+        return this.repository.findByTipoProductoId(tipoProductoId);
     }
 
+    // Buscar todos los productos con el mismo proveedor
     @Override
-    public Iterable<productosModel> saveAll(Iterable<productosModel> entities) {
-        return this.repository.saveAll(entities);
+    public List<productosModel> findByProveedorId(Integer proveedorId) {
+        return this.repository.findByProveedorId(proveedorId);
     }
-    
-
 }

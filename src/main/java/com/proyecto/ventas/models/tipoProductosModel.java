@@ -3,8 +3,11 @@ package com.proyecto.ventas.models;
 import java.io.Serializable;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -31,6 +34,7 @@ public class tipoProductosModel implements Serializable {
     private boolean estado;
 
     // Relacion de uno a muchos con la tabla Productos
-    @OneToMany(mappedBy = "tipoProducto")
+    @JsonIgnore
+    @OneToMany(mappedBy = "tipoProducto", fetch = FetchType.LAZY)
     private List<productosModel> productos;
 }

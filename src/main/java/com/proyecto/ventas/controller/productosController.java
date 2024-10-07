@@ -1,6 +1,9 @@
 package com.proyecto.ventas.controller;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -15,49 +18,116 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.ventas.models.productosModel;
 import com.proyecto.ventas.service.productosService;
 
-@RestController
-@RequestMapping("/productos")
 @CrossOrigin
-
+@RestController
+@RequestMapping("productos")
 public class productosController {
-    
     @Autowired
     private productosService productosService;
 
-    @GetMapping("/listar")
+    // Listar todos los productos
+    @GetMapping
     public Iterable<productosModel> getProductos() {
         return this.productosService.findAll();
     }
 
-    @PostMapping("/guardar")
-    public ResponseEntity<String> saveProductos (@RequestBody productosModel entity) {
-        try {
-            this.productosService.save(entity);
-            return ResponseEntity.ok("Producto guardado correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error en el servidor");
-        }
+    // Listar por ID
+    @GetMapping("/{idProducto}")
+    public ResponseEntity<productosModel> getProductoById(@PathVariable int idProducto) {
+        Optional<productosModel> producto = this.productosService.findById(idProducto);
 
+        if (producto.isPresent()) {
+            return ResponseEntity.ok(producto.get());
+        } else {
+            return ResponseEntity.badRequest().body(null);
+        }
     }
 
-    @DeleteMapping("/eliminar/{idProducto}")
-    public ResponseEntity<String> deleteProductos (@PathVariable int idProducto) {
+    // Guardar un producto
+    @PostMapping
+    public ResponseEntity<String> saveProducto(@RequestBody productosModel entity) {
+        try {
+            productosService.save(entity);
+            return ResponseEntity.ok("Producto guardado correctamente");
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al guardar el producto");
+        }
+    }
+
+    // Actualizar un producto
+    @PutMapping("/{idProducto}")
+    public ResponseEntity<String> updateProducto(@PathVariable int idProducto, @RequestBody productosModel entity) {
+        try {
+            Optional<productosModel> producto = this.productosService.findById(idProducto);
+
+            if (producto.isPresent()) {
+                entity.setId(idProducto);
+                this.productosService.save(entity);
+                return ResponseEntity.ok("Producto actualizado correctamente");
+            } else {
+                return ResponseEntity.badRequest().body("Producto no encontrado con ID: " + idProducto);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al actualizar el producto");
+        }
+    }
+
+    // Eliminar un producto
+    @DeleteMapping("/{idProducto}")
+    public ResponseEntity<String> deleteProducto(@PathVariable int idProducto) {
         try {
             this.productosService.deleteById(idProducto);
             return ResponseEntity.ok("Producto eliminado correctamente");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error en el servidor");
+            return ResponseEntity.badRequest().body("Error al eliminar el producto con ID: " + idProducto);
         }
-
     }
 
-    @PutMapping("/actualizar")
-    public ResponseEntity<String> updateProductos (@RequestBody productosModel entity) {
-        try {
-            this.productosService.save(entity);
-            return ResponseEntity.ok("Producto actualizado correctamente");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error en el servidor");
+    // Buscar por nombre
+    @GetMapping("/nombre/{nombre}")
+    public ResponseEntity<Iterable<productosModel>> getProductosByNombre(@PathVariable String nombre) {
+        Iterable<productosModel> productos = this.productosService.findByNombre(nombre);
+
+        if (productos.iterator().hasNext()) {
+            return ResponseEntity.ok(productos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Buscar por estado
+    @GetMapping("/estado/{estado}")
+    public ResponseEntity<Iterable<productosModel>> getProductosByEstado(@PathVariable Boolean estado) {
+        Iterable<productosModel> productos = this.productosService.findByEstado(estado);
+
+        if (productos.iterator().hasNext()) {
+            return ResponseEntity.ok(productos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Buscar por tipo de producto
+    @GetMapping("/tipo/{tipo}")
+    public ResponseEntity<Iterable<productosModel>> getProductosByTipoId(@PathVariable Integer tipo) {
+        Iterable<productosModel> productos = this.productosService.findByTipoProductoId(tipo);
+
+        if (productos.iterator().hasNext()) {
+            return ResponseEntity.ok(productos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Buscar por proveedor
+    @GetMapping("/proveedor/{proveedor}")
+    public ResponseEntity<Iterable<productosModel>> getProductosByProveedorId(@PathVariable Integer proveedor) {
+        Iterable<productosModel> productos = this.productosService.findByProveedorId(proveedor);
+
+        if (productos.iterator().hasNext()) {
+            return ResponseEntity.ok(productos);
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
     }
 }

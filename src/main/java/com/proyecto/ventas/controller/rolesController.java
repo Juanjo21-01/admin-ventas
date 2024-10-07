@@ -5,6 +5,7 @@ import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -17,53 +18,80 @@ import org.springframework.web.bind.annotation.RestController;
 import com.proyecto.ventas.models.rolesModel;
 import com.proyecto.ventas.service.rolesService;
 
+@CrossOrigin
 @RestController
-@RequestMapping("/roles")
+@RequestMapping("roles")
 public class rolesController {
     @Autowired
     private rolesService rolesService;
-    
-    @GetMapping("/listarRoles")
+
+    // Listar todos los roles
+    @GetMapping
     public Iterable<rolesModel> getRoles() {
         return this.rolesService.findAll();
     }
 
-    @PostMapping("/guardarRol")
-    public ResponseEntity<String> saveClientes(@RequestBody rolesModel entity) {
+    // Listar por ID
+    @GetMapping("/{idRol}")
+    public ResponseEntity<rolesModel> getRolById(@PathVariable int idRol) {
+        Optional<rolesModel> rol = this.rolesService.findById(idRol);
+
+        if (rol.isPresent()) {
+            return ResponseEntity.ok(rol.get());
+        } else {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // Guardar un rol
+    @PostMapping
+    public ResponseEntity<String> saveRole(@RequestBody rolesModel entity) {
         try {
             this.rolesService.save(entity);
             return ResponseEntity.ok("Rol guardado correctamente");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error en el servidor");
+            return ResponseEntity.badRequest().body("Error al guardar el rol");
         }
     }
-    @DeleteMapping("/eliminar/{idRol}")
+
+    // Actualizar un rol
+    @PutMapping("/{idRol}")
+    public ResponseEntity<String> updateRol(@PathVariable int idRol, @RequestBody rolesModel entity) {
+        try {
+            Optional<rolesModel> rol = this.rolesService.findById(idRol);
+
+            if (rol.isPresent()) {
+                entity.setId(idRol);
+                this.rolesService.save(entity);
+                return ResponseEntity.ok("Rol actualizado correctamente");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado con ID: " + idRol);
+            }
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body("Error al actualizar el rol");
+        }
+    }
+
+    // Eliminar un rol
+    @DeleteMapping("/{idRol}")
     public ResponseEntity<String> deleteRol(@PathVariable int idRol) {
         try {
             this.rolesService.deleteById(idRol);
             return ResponseEntity.ok("Rol eliminado correctamente");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body("Error en el servidor");
+            return ResponseEntity.badRequest().body("Error al eliminar el rol con ID: " + idRol);
         }
     }
 
-      @PutMapping("/actualizar/{idRol}")
-public ResponseEntity<String> updateRol(@PathVariable int idRol, @RequestBody rolesModel entity) {
-    try {
-      
-        Optional<rolesModel> existingRol = this.rolesService.findById(idRol);
-        
-        if (existingRol.isPresent()) {
-            rolesModel rolToUpdate = existingRol.get();
-            
-            rolToUpdate.setNombre(entity.getNombre());
-            this.rolesService.save(rolToUpdate);
-            return ResponseEntity.ok().body("Rol actualizado correctamente");
+    // Buscar por nombre
+    @GetMapping("/nombre/{nombreRol}")
+    public ResponseEntity<rolesModel> getRolByName(@PathVariable String nombreRol) {
+        Optional<rolesModel> rol = this.rolesService.findByNombre(nombreRol);
+
+        if (rol.isPresent()) {
+            return ResponseEntity.ok(rol.get());
         } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
         }
-    } catch (Exception e) {
-        return ResponseEntity.badRequest().body("Error al actualizar el Rol");
     }
-}
 }
