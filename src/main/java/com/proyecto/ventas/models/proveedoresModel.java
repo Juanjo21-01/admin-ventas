@@ -1,16 +1,12 @@
 package com.proyecto.ventas.models;
 
 import java.io.Serializable;
-import java.util.List;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -40,14 +36,4 @@ public class proveedoresModel implements Serializable {
 
     @Column(name = "estado", nullable = false)
     private boolean estado;
-
-    // Relacion de uno a muchos con la tabla Productos
-    @JsonIgnore
-    @OneToMany(mappedBy = "proveedor")
-    private List<productosModel> productos;
-
-    // Relacion de uno a muchos con la tabla Compras
-    @JsonIgnore
-    @OneToMany(mappedBy = "proveedor")
-    private List<comprasModel> compras;
 }

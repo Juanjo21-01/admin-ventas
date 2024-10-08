@@ -13,12 +13,6 @@ import com.proyecto.ventas.service.productosService;
 public class productosServiceImpl extends CommonSvcImpl<productosModel, productosRepository>
         implements productosService {
 
-    // Listar todos los productos
-    @Override
-    public List<productosModel> findAll() {
-        return (List<productosModel>) this.repository.findAll();
-    }
-
     // Buscar por nombre
     @Override
     public List<productosModel> findByNombre(String nombre) {
