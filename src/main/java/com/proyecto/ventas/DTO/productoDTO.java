@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class ProductoDTO {
+public class productoDTO {
     // Atributos
     private int id;
     private String nombre;
@@ -16,10 +16,10 @@ public class ProductoDTO {
     private String proveedorNombre;
 
     // Constructores
-    public ProductoDTO() {
+    public productoDTO() {
     }
 
-    public ProductoDTO(int id, String nombre, double precioUnitario, int stock, boolean estado,
+    public productoDTO(int id, String nombre, double precioUnitario, int stock, boolean estado,
             String tipoProductoNombre,
             String proveedorNombre) {
         this.id = id;

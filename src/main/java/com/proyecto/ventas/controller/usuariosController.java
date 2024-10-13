@@ -1,10 +1,17 @@
 package com.proyecto.ventas.controller;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,13 +22,30 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.proyecto.ventas.DTO.LoginRequest;
 import com.proyecto.ventas.models.usuariosModel;
+import com.proyecto.ventas.repository.usuariosRepository;
+import com.proyecto.ventas.service.JwtUtil;
 import com.proyecto.ventas.service.usuariosService;
 
 @CrossOrigin
 @RestController
 @RequestMapping("usuarios")
 public class usuariosController {
+
+    // autenticacion
+    @Autowired
+    private AuthenticationManager authenticationManager;
+    @Autowired
+    private JwtUtil jwtUtil;
+
+    @Autowired
+    private usuariosRepository usuarioRepository;
+
+    @Autowired
+    private PasswordEncoder passwordEncoder;
+
+    // *** */
     @Autowired
     private usuariosService usuariosService;
 
@@ -130,6 +154,57 @@ public class usuariosController {
             return ResponseEntity.ok(usuarios);
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+    }
+
+    // autenticacion
+    @PostMapping("/register")
+    public ResponseEntity<?> registrarUsuario(@RequestBody usuariosModel entity) {
+        // Cifrar la contraseña antes de guardarla en la base de datos
+        entity.setPassword(passwordEncoder.encode(entity.getPassword()));
+        usuarioRepository.save(entity);
+        Map<String, String> response = new HashMap<>();
+        response.put("mensaje", "Usuario registrado con éxito");
+        return ResponseEntity.ok(response);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<?> login(@RequestBody LoginRequest loginRequest) {
+        try {
+            // Autentica al usuario usando AuthenticationManager
+            authenticationManager.authenticate(
+                    new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
+
+            // Si la autenticación es exitosa, generar el token JWT
+            final String jwt = jwtUtil.generateToken(loginRequest.getEmail());
+
+            // Cargar el usuario para obtener más información
+            Optional<usuariosModel> usuarioOptional = usuarioRepository.findByEmail(loginRequest.getEmail());
+
+            if (!usuarioOptional.isPresent()) {
+                return ResponseEntity.status(404).body("Usuario no encontrado");
+            }
+
+            usuariosModel usuario = usuarioOptional.get();
+
+            //Se utiliza LinkedHashMap en vez de HashMap para mantener el orden de las inserciónes.
+            Map<String, Object> response = new LinkedHashMap<>();
+
+            response.put("mensaje", "Login exitoso");
+            response.put("email", loginRequest.getEmail());
+            response.put("nombre", usuario.getNombres()); // Agregar el nombre del usuario
+            response.put("rol_Id", usuario.getRolId()); 
+            response.put("idUsuario",usuario.getId());
+            response.put("token", jwt);
+
+            return ResponseEntity.ok(response);
+
+        } catch (BadCredentialsException e) {
+            // Si las credenciales son incorrectas
+            return ResponseEntity.status(400).body("Credenciales incorrectas");
+        } catch (Exception e) {
+            // Capturar otros tipos de errores para obtener más información
+            return ResponseEntity.status(500).body("Error durante el proceso de autenticación: " + e.getMessage());
         }
     }
 }

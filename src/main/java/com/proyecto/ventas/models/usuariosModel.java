@@ -16,7 +16,8 @@ import lombok.Setter;
 @Setter
 @Entity
 
-@Table(name = "usuarios")
+//schema es como una "carpeta" que organiza un conjunto de tablas y otros objetos en la base de datos.
+@Table(name = "usuarios", schema = "autenticacion")
 public class usuariosModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
