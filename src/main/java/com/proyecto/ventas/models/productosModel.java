@@ -16,7 +16,7 @@ import lombok.Setter;
 @Setter
 @Entity
 
-@Table(name = "productos")
+@Table(name = "productos", schema = "autenticacion")
 public class productosModel implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
