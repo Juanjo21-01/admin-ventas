@@ -187,15 +187,21 @@ public class usuariosController {
 
             usuariosModel usuario = usuarioOptional.get();
 
-            //Se utiliza LinkedHashMap en vez de HashMap para mantener el orden de las inserciónes.
-            Map<String, Object> response = new LinkedHashMap<>();
+            // Se utiliza LinkedHashMap en vez de HashMap para mantener el orden de las
+            // inserciones.
+            Map<String, Object> usuarioResponse = new LinkedHashMap<>();
+            usuarioResponse.put("id", usuario.getId());
+            usuarioResponse.put("nombre", usuario.getNombres());
+            usuarioResponse.put("email", usuario.getEmail());
+            usuarioResponse.put("rolId", usuario.getRolId());
 
-            response.put("mensaje", "Login exitoso");
-            response.put("email", loginRequest.getEmail());
-            response.put("nombre", usuario.getNombres()); // Agregar el nombre del usuario
-            response.put("rol_Id", usuario.getRolId()); 
-            response.put("idUsuario",usuario.getId());
-            response.put("token", jwt);
+            // Se utiliza LinkedHashMap en vez de HashMap para mantener el orden de las
+            // inserciones.
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("mensaje", "Autenticación exitosa, Bienvenido " + usuario.getNombres());
+            response.put("usuario", usuarioResponse);
+            response.put("access_token", jwt);
+            response.put("token_type", "Bearer");
 
             return ResponseEntity.ok(response);
 
