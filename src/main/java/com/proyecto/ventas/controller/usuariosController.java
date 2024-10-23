@@ -69,10 +69,10 @@ public class usuariosController {
 
     // Guardar un usuario
     @PostMapping
-    public ResponseEntity<String> saveUsuario(@RequestBody usuariosModel entity) {
+    public ResponseEntity<?> saveUsuario(@RequestBody usuariosModel entity) {
         try {
             this.usuariosService.save(entity);
-            return ResponseEntity.ok("Usuario guardado correctamente");
+            return ResponseEntity.ok(entity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al guardar el usuario");
         }
@@ -80,7 +80,7 @@ public class usuariosController {
 
     // Actualizar un usuario
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<String> updateUsuario(@PathVariable int idUsuario,
+    public ResponseEntity<?> updateUsuario(@PathVariable int idUsuario,
             @RequestBody usuariosModel entity) {
         try {
             Optional<usuariosModel> usuario = this.usuariosService.findById(idUsuario);
@@ -88,7 +88,7 @@ public class usuariosController {
             if (usuario.isPresent()) {
                 entity.setId(idUsuario);
                 this.usuariosService.save(entity);
-                return ResponseEntity.ok("Usuario actualizado correctamente");
+                return ResponseEntity.ok(entity);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("Usuario no encontrado con ID: " + idUsuario);

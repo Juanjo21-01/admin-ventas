@@ -46,10 +46,10 @@ public class ventasController {
 
     // Guardar una venta
     @PostMapping
-    public ResponseEntity<String> saveVenta(@RequestBody ventasModel entity) {
+    public ResponseEntity<?> saveVenta(@RequestBody ventasModel entity) {
         try {
             ventasService.save(entity);
-            return ResponseEntity.ok("Venta guardada correctamente");
+            return ResponseEntity.ok(entity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al guardar la venta");
         }

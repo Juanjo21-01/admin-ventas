@@ -45,10 +45,10 @@ public class productosController {
 
     // Guardar un producto
     @PostMapping
-    public ResponseEntity<String> saveProducto(@RequestBody productosModel entity) {
+    public ResponseEntity<?> saveProducto(@RequestBody productosModel entity) {
         try {
             productosService.save(entity);
-            return ResponseEntity.ok("Producto guardado correctamente");
+            return ResponseEntity.ok(entity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al guardar el producto");
         }
@@ -56,14 +56,14 @@ public class productosController {
 
     // Actualizar un producto
     @PutMapping("/{idProducto}")
-    public ResponseEntity<String> updateProducto(@PathVariable int idProducto, @RequestBody productosModel entity) {
+    public ResponseEntity<?> updateProducto(@PathVariable int idProducto, @RequestBody productosModel entity) {
         try {
             Optional<productosModel> producto = this.productosService.findById(idProducto);
 
             if (producto.isPresent()) {
                 entity.setId(idProducto);
                 this.productosService.save(entity);
-                return ResponseEntity.ok("Producto actualizado correctamente");
+                return ResponseEntity.ok(entity);
             } else {
                 return ResponseEntity.badRequest().body("Producto no encontrado con ID: " + idProducto);
             }
