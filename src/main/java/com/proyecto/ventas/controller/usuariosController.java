@@ -163,9 +163,7 @@ public class usuariosController {
         // Cifrar la contraseña antes de guardarla en la base de datos
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         usuarioRepository.save(entity);
-        Map<String, String> response = new HashMap<>();
-        response.put("mensaje", "Usuario registrado con éxito");
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(entity);
     }
 
     @PostMapping("/login")
