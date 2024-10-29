@@ -44,7 +44,7 @@ public class productosController {
     }
 
     // Guardar un producto
-    @PostMapping
+    @PostMapping("/guardar")
     public ResponseEntity<?> saveProducto(@RequestBody productosModel entity) {
         try {
             productosService.save(entity);
@@ -65,7 +65,7 @@ public class productosController {
                 this.productosService.save(entity);
                 return ResponseEntity.ok(entity);
             } else {
-                return ResponseEntity.badRequest().body("Producto no encontrado con ID: " + idProducto);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Producto no encontrado");
             }
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al actualizar el producto");
