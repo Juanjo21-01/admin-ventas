@@ -33,7 +33,7 @@ public class JwtRequestFilter extends OncePerRequestFilter {
         // Rutas públicas que no requieren validación del token JWT
         String servletPath = request.getServletPath();
         if (servletPath.equals("/usuarios/login") || servletPath.equals("/usuarios/register")
-                || servletPath.equals("/productos")) {
+                || servletPath.equals("/productos")  || servletPath.equals("/comentarios"))  {
             // Si la ruta es pública, se omite el filtro y se continúa con la cadena
             chain.doFilter(request, response);
             return;

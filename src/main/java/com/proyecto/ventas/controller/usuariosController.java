@@ -30,7 +30,7 @@ import com.proyecto.ventas.service.usuariosService;
 
 @CrossOrigin
 @RestController
-@RequestMapping("usuarios")
+@RequestMapping("/usuarios")
 public class usuariosController {
 
     // autenticacion
