@@ -45,10 +45,10 @@ public class proveedoresController {
 
     // Guardar un proveedor
     @PostMapping
-    public ResponseEntity<String> saveProveedor(@RequestBody proveedoresModel entity) {
+    public ResponseEntity<?> saveProveedor(@RequestBody proveedoresModel entity) {
         try {
             this.proveedoresService.save(entity);
-            return ResponseEntity.ok("Proveedor guardado correctamente");
+            return ResponseEntity.ok(entity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al guardar el proveedor");
         }
@@ -56,7 +56,7 @@ public class proveedoresController {
 
     // Actualizar un proveedor
     @PutMapping("/{idProveedor}")
-    public ResponseEntity<String> updateProveedor(@PathVariable int idProveedor,
+    public ResponseEntity<?> updateProveedor(@PathVariable int idProveedor,
             @RequestBody proveedoresModel entity) {
         try {
             Optional<proveedoresModel> proveedor = this.proveedoresService.findById(idProveedor);
@@ -64,7 +64,7 @@ public class proveedoresController {
             if (proveedor.isPresent()) {
                 entity.setId(idProveedor);
                 this.proveedoresService.save(entity);
-                return ResponseEntity.ok("Proveedor actualizado correctamente");
+                return ResponseEntity.ok(entity);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("Proveedor no encontrado con ID: " + idProveedor);

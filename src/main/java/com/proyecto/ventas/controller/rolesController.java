@@ -45,10 +45,10 @@ public class rolesController {
 
     // Guardar un rol
     @PostMapping
-    public ResponseEntity<String> saveRole(@RequestBody rolesModel entity) {
+    public ResponseEntity<?> saveRole(@RequestBody rolesModel entity) {
         try {
             this.rolesService.save(entity);
-            return ResponseEntity.ok("Rol guardado correctamente");
+            return ResponseEntity.ok(entity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al guardar el rol");
         }
@@ -56,14 +56,14 @@ public class rolesController {
 
     // Actualizar un rol
     @PutMapping("/{idRol}")
-    public ResponseEntity<String> updateRol(@PathVariable int idRol, @RequestBody rolesModel entity) {
+    public ResponseEntity<?> updateRol(@PathVariable int idRol, @RequestBody rolesModel entity) {
         try {
             Optional<rolesModel> rol = this.rolesService.findById(idRol);
 
             if (rol.isPresent()) {
                 entity.setId(idRol);
                 this.rolesService.save(entity);
-                return ResponseEntity.ok("Rol actualizado correctamente");
+                return ResponseEntity.ok(entity);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Rol no encontrado con ID: " + idRol);
             }

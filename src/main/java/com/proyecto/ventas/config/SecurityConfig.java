@@ -1,5 +1,7 @@
 package com.proyecto.ventas.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -34,10 +36,20 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
+                .cors(cors -> cors.configurationSource(request -> {
+                    var corsConfiguration = new org.springframework.web.cors.CorsConfiguration();
+                    corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+                    corsConfiguration.setAllowedMethods(List.of("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS"));
+                    corsConfiguration.setAllowedHeaders(
+                            List.of("X-Requested-With", "Origin", "Content-Type", "Accept", "Authorization"));
+                    corsConfiguration.setAllowCredentials(true);
+                    return corsConfiguration;
+                }))
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(requests -> requests
-                        .requestMatchers(HttpMethod.POST,"/usuarios/login", "/usuarios/register", "/comentarios").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/productos", "/comentarios").permitAll()
+
+                        .requestMatchers(HttpMethod.POST, "/usuarios/login", "/usuarios/register", "/comentarios").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/productos", "/productos/{id}", "/comentarios").permitAll()
                         .anyRequest().authenticated())
                 .sessionManagement(management -> management.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 

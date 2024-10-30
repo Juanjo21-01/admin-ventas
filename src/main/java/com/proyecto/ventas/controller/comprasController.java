@@ -46,10 +46,10 @@ public class comprasController {
 
     // Guardar una compra
     @PostMapping
-    public ResponseEntity<String> saveCompra(@RequestBody comprasModel entity) {
+    public ResponseEntity<?> saveCompra(@RequestBody comprasModel entity) {
         try {
             comprasService.save(entity);
-            return ResponseEntity.ok("Compra guardada correctamente");
+            return ResponseEntity.ok(entity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al guardar la compra");
         }

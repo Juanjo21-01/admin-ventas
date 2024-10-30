@@ -45,10 +45,10 @@ public class tipoProductosController {
 
     // Guardar un tipo de producto
     @PostMapping
-    public ResponseEntity<String> saveTipoProducto(@RequestBody tipoProductosModel entity) {
+    public ResponseEntity<?> saveTipoProducto(@RequestBody tipoProductosModel entity) {
         try {
             this.tipoProductosService.save(entity);
-            return ResponseEntity.ok("Tipo de producto guardado correctamente");
+            return ResponseEntity.ok(entity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al guardar el tipo de producto");
         }
@@ -56,7 +56,7 @@ public class tipoProductosController {
 
     // Actualizar un tipo de producto
     @PutMapping("/{idTipoProducto}")
-    public ResponseEntity<String> updateTipoProducto(@PathVariable int idTipoProducto,
+    public ResponseEntity<?> updateTipoProducto(@PathVariable int idTipoProducto,
             @RequestBody tipoProductosModel entity) {
         try {
             Optional<tipoProductosModel> tipoProducto = this.tipoProductosService.findById(idTipoProducto);
@@ -64,7 +64,7 @@ public class tipoProductosController {
             if (tipoProducto.isPresent()) {
                 entity.setId(idTipoProducto);
                 this.tipoProductosService.save(entity);
-                return ResponseEntity.ok("Tipo de producto actualizado correctamente");
+                return ResponseEntity.ok(entity);
             } else {
                 return ResponseEntity.badRequest().body("El tipo de producto no existe");
             }

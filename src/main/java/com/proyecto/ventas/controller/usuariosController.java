@@ -69,10 +69,10 @@ public class usuariosController {
 
     // Guardar un usuario
     @PostMapping
-    public ResponseEntity<String> saveUsuario(@RequestBody usuariosModel entity) {
+    public ResponseEntity<?> saveUsuario(@RequestBody usuariosModel entity) {
         try {
             this.usuariosService.save(entity);
-            return ResponseEntity.ok("Usuario guardado correctamente");
+            return ResponseEntity.ok(entity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body("Error al guardar el usuario");
         }
@@ -80,7 +80,7 @@ public class usuariosController {
 
     // Actualizar un usuario
     @PutMapping("/{idUsuario}")
-    public ResponseEntity<String> updateUsuario(@PathVariable int idUsuario,
+    public ResponseEntity<?> updateUsuario(@PathVariable int idUsuario,
             @RequestBody usuariosModel entity) {
         try {
             Optional<usuariosModel> usuario = this.usuariosService.findById(idUsuario);
@@ -88,7 +88,7 @@ public class usuariosController {
             if (usuario.isPresent()) {
                 entity.setId(idUsuario);
                 this.usuariosService.save(entity);
-                return ResponseEntity.ok("Usuario actualizado correctamente");
+                return ResponseEntity.ok(entity);
             } else {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND)
                         .body("Usuario no encontrado con ID: " + idUsuario);
@@ -163,9 +163,7 @@ public class usuariosController {
         // Cifrar la contraseña antes de guardarla en la base de datos
         entity.setPassword(passwordEncoder.encode(entity.getPassword()));
         usuarioRepository.save(entity);
-        Map<String, String> response = new HashMap<>();
-        response.put("mensaje", "Usuario registrado con éxito");
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(entity);
     }
 
     @PostMapping("/login")
@@ -187,15 +185,21 @@ public class usuariosController {
 
             usuariosModel usuario = usuarioOptional.get();
 
-            //Se utiliza LinkedHashMap en vez de HashMap para mantener el orden de las inserciónes.
-            Map<String, Object> response = new LinkedHashMap<>();
+            // Se utiliza LinkedHashMap en vez de HashMap para mantener el orden de las
+            // inserciones.
+            Map<String, Object> usuarioResponse = new LinkedHashMap<>();
+            usuarioResponse.put("id", usuario.getId());
+            usuarioResponse.put("nombre", usuario.getNombres());
+            usuarioResponse.put("email", usuario.getEmail());
+            usuarioResponse.put("rolId", usuario.getRolId());
 
-            response.put("mensaje", "Login exitoso");
-            response.put("email", loginRequest.getEmail());
-            response.put("nombre", usuario.getNombres()); // Agregar el nombre del usuario
-            response.put("rol_Id", usuario.getRolId()); 
-            response.put("idUsuario",usuario.getId());
-            response.put("token", jwt);
+            // Se utiliza LinkedHashMap en vez de HashMap para mantener el orden de las
+            // inserciones.
+            Map<String, Object> response = new LinkedHashMap<>();
+            response.put("mensaje", "Autenticación exitosa, Bienvenido " + usuario.getNombres());
+            response.put("usuario", usuarioResponse);
+            response.put("access_token", jwt);
+            response.put("token_type", "Bearer");
 
             return ResponseEntity.ok(response);
 
