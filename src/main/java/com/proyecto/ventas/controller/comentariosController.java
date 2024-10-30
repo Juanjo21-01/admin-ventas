@@ -33,7 +33,7 @@ public class comentariosController {
         List<comentariosModel> comentarios = comentariosRepository.findAll();
         return ResponseEntity.ok(comentarios);
     }
-     @PostMapping
+     @PostMapping("/guardar")
     public ResponseEntity<String> saveComentario(
             @RequestBody comentariosModel entity,
             @RequestParam int usuarioId,
@@ -49,8 +49,8 @@ public class comentariosController {
                 .body("Usuario no encontrado");
         }
         
-        // Verificar si el usuario tiene el rol correcto (rol cliente = 1)
-        if (!usuario.getRolId().equals(1)) {
+        // Verificar si el usuario tiene el rol correcto (rol cliente = 2)
+        if (!usuario.getRolId().equals(2)) {
             return ResponseEntity.badRequest()
                 .body("El usuario no tiene permisos para comentar");
         }
