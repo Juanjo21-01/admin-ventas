@@ -21,9 +21,9 @@ Sistema de control de inventario para la empresa **TheFullStock**, especializada
 
 ## 📄 Instalación proyecto Back-End:
 
--_Realizar un git clone del repositorio_
--_Dentro de la carpeta abrir "CMD o Git Bash_
--_Dentro del archivo application.properties modificar los datos correspondientes a las bases de datos que se utilizaran_
+- Realizar un git clone del repositorio.
+- Dentro de la carpeta abrir "CMD o Git Bash.
+- Dentro del archivo application.properties modificar los datos correspondientes a las bases de datos que se utilizaran.
 
 ## 📄 Licencia
 
