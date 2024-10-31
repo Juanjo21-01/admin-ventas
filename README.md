@@ -23,6 +23,11 @@ Sistema de control de inventario para la empresa **TheFullStock**, especializada
 
 - Realizar un git clone del repositorio.
 - Dentro de la carpeta abrir "CMD o Git Bash.
+- Instalar las siguientes extenciones en Visual estudio code:
+  - Extension Pack for Java
+  - Gradle for Java
+  - Spring Initializr Java Support
+  - MongoDB for VS Code
 - Dentro del archivo application.properties modificar los datos correspondientes a las bases de datos que se utilizaran.
 
 ## 📄 Licencia
