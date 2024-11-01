@@ -14,10 +14,11 @@ Sistema de control de inventario para la empresa **TheFullStock**, especializada
 
 ## 🛠️ Desarrollado con:
 
-- [MySQL] - Base de datos Relacional. (https://drive.google.com/drive/folders/11EC4G83bDMM-nD3vbkZG5vQV0h7VG6yi) - (https://drive.google.com/drive/folders/1xoFcWre5F8R4d1u8OFRqeC84SQVJu4FI)
-- [MongoDB] - Base de datos NoSQL. (https://drive.google.com/drive/folders/1o2yNevdu1trfP_glZ0Mw9_wWXgy7XY_9)
-- [JAVA] - Lenguaje de programacion.
-- [Spring Boot] - Framework.
+- MySQL - Base de datos Relacional. [(https://www.mysql.com/products/workbench/)]
+- MongoDB - Base de datos NoSQL. [(https://www.mongodb.com/products/platform/atlas-database)]
+- JAVA - Lenguaje de programacion. [(https://www.java.com/download/ie_manual.jsp)]
+- Spring Boot - Framework. [(https://docs.spring.io/spring-boot/installing.html)]
+- Documentacion: [(https://drive.google.com/drive/folders/1q7j6VzVC3Eo3UPjnfxAAel1fY_p49U22)].
 
 ## 📄 Instalación proyecto Back-End:
 
